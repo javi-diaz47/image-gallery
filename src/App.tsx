@@ -1,9 +1,10 @@
 import React from "react";
+import { Header } from "./components/Header/Header";
 
 export const App = (): JSX.Element => {
   return (
-    <div className="w-full min-h-screen bg-black grid place-items-center">
-      <h2 className="text-white text-3xl font-bold">Hello, world!</h2>
+    <div className="w-full min-h-screen bg-black flex justify-center py-24">
+      <Header />
     </div>
   );
 };
