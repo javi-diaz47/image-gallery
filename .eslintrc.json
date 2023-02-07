@@ -15,5 +15,10 @@
     "project": ["tsconfig.json", "tsconfig.node.json"]
   },
   "plugins": ["react"],
+  "settings": {
+    "react": {
+      "version": "18.2.0"
+    }
+  },
   "rules": {}
 }
