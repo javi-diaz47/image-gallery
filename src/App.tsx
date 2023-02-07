@@ -1,11 +1,9 @@
 import React from "react";
-import "./App.css";
 
 export const App = (): JSX.Element => {
-  console.log(import.meta.env.VITE_PEXEL_API_KEY);
   return (
-    <div className="App">
-      <h2>Hello, world!</h2>
+    <div className="w-full min-h-screen bg-black grid place-items-center">
+      <h2 className="text-white text-3xl font-bold">Hello, world!</h2>
     </div>
   );
 };
