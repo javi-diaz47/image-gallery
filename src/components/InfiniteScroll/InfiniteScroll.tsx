@@ -1,34 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import { useInfiniteScroll } from "../../Hooks/useInfiniteScroll";
+import type { State } from "../../Hooks/useInfiniteScroll";
 
-interface State<S> {
-  state: S[];
-  dispatch: (prev: S[]) => S[];
-}
-
-export function InfiniteScroll<S>({ state, dispatch }: State<S>): JSX.Element {
-  const [items, setItems] = useState<S[]>(state);
-
-  const lastItemRef = useRef<HTMLDivElement | null>(null);
-
-  const observer = useRef<IntersectionObserver>();
-
-  useEffect(() => {
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && lastItemRef.current !== null) {
-        setItems(dispatch);
-        observer.current?.unobserve(lastItemRef.current);
-      }
-    });
-
-    if (lastItemRef.current !== null) {
-      observer.current.observe(lastItemRef.current);
-      console.log("observing");
-    }
-
-    return () => {
-      observer.current?.disconnect();
-    };
-  });
+export function InfiniteScroll<S>(props: State<S>): JSX.Element {
+  const { items, lastItemRef } = useInfiniteScroll<S>(props);
 
   return (
     <div className="w-full min-h-screen bg-black flex flex-col items-center py-24 gap-32">
