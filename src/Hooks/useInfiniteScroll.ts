@@ -1,49 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-
-export interface State<S> {
-  update: () => Promise<S[]>;
-}
-
+import { useEffect, useState } from "react";
+import { useIntersectionObserver } from "./useIntersectionObserver";
 interface ReturnType<S> {
   lastItemRef: React.MutableRefObject<HTMLDivElement | null>;
   items: S[];
 }
 
-export const useInfiniteScroll = <S>({ update }: State<S>): ReturnType<S> => {
+export const useInfiniteScroll = <S>({
+  req,
+}: {
+  req: () => Promise<S[]>;
+}): ReturnType<S> => {
   const [items, setItems] = useState<S[]>([]);
 
-  const lastItemRef = useRef<HTMLDivElement | null>(null);
-
-  const observer = useRef<IntersectionObserver>();
-
   const dispatchUpdate = (): void => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    update().then((newItems) => {
+    void req().then((newItems) => {
       setItems([...items, ...newItems]);
     });
   };
 
+  const { lastRef: lastItemRef } = useIntersectionObserver({
+    dispatch: dispatchUpdate,
+  });
+
   useEffect(() => {
     dispatchUpdate();
   }, []);
-
-  useEffect(() => {
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && lastItemRef.current !== null) {
-        dispatchUpdate();
-        console.log("done");
-        observer.current?.unobserve(lastItemRef.current);
-      }
-    });
-
-    if (lastItemRef.current !== null) {
-      observer.current.observe(lastItemRef.current);
-    }
-
-    return () => {
-      observer.current?.disconnect();
-    };
-  });
 
   return {
     lastItemRef,

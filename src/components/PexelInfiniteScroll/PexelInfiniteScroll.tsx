@@ -1,23 +1,12 @@
 import React from "react";
-import { db } from "./db";
+import { requestPexelPage } from "../../utils/requestPexelPage";
 import { useInfiniteScroll } from "../../Hooks/useInfiniteScroll";
 import type { Photo } from "../../types";
 
 export const PexelInfiniteScroll = (): JSX.Element => {
-  const update = async (): Promise<Photo[]> => {
-    // const res = await fetch(query, {
-    //   headers: {
-    //     Authorization: import.meta.env.VITE_PEXEL_API_KEY,
-    //   },
-    // });
-    // return await res.json();
-    // eslint-disable-next-line promise/param-names
-    return await new Promise((res, rej) => {
-      res(db.photos);
-    });
-  };
-
-  const { items, lastItemRef } = useInfiniteScroll<Photo>({ update });
+  const { items, lastItemRef } = useInfiniteScroll<Photo>({
+    req: requestPexelPage,
+  });
 
   return (
     <>
