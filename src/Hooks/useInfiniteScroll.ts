@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export interface State<S> {
-  state: S[];
-  dispatch: (prev: S[]) => S[];
+  update: () => Promise<S[]>;
 }
 
 interface ReturnType<S> {
@@ -10,20 +9,29 @@ interface ReturnType<S> {
   items: S[];
 }
 
-export const useInfiniteScroll = <S>({
-  state,
-  dispatch,
-}: State<S>): ReturnType<S> => {
-  const [items, setItems] = useState<S[]>(state);
+export const useInfiniteScroll = <S>({ update }: State<S>): ReturnType<S> => {
+  const [items, setItems] = useState<S[]>([]);
 
   const lastItemRef = useRef<HTMLDivElement | null>(null);
 
   const observer = useRef<IntersectionObserver>();
 
+  const dispatchUpdate = (): void => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    update().then((newItems) => {
+      setItems([...items, ...newItems]);
+    });
+  };
+
+  useEffect(() => {
+    dispatchUpdate();
+  }, []);
+
   useEffect(() => {
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && lastItemRef.current !== null) {
-        setItems(dispatch);
+        dispatchUpdate();
+        console.log("done");
         observer.current?.unobserve(lastItemRef.current);
       }
     });
