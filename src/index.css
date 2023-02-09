@@ -13,32 +13,27 @@
 
 .marquee {
   overflow: hidden;
-}
-
-:root {
-  --space: 20%;
-  --translate: calc(var(--space) + 34%);
-  --x: calc(-1 * var(--translate));
+  text-transform: capitalize;
+  background-color: white;
 }
 
 .marquee__inner {
-  animation: marquee_animation 4s linear forwards infinite;
-}
-
-.marquee__inner h2 + h2 {
-  padding-left: var(--space);
+  display: flex;
+  gap: 12rem;
+  mix-blend-mode: difference;
+  animation: marquee_animation 8s linear forwards infinite;
 }
 
 .marquee__inner h2 {
-  font-size: 8rem;
+  font-size: clamp(4vw, 8rem, 10vw);
   font-weight: 100;
 }
 
 @keyframes marquee_animation {
   from {
-    transform: translateX(0);
+    transform: translateX(100%);
   }
   to {
-    transform: translateX(var(--x));
+    transform: translateX(calc(-150% - 48rem));
   }
 }

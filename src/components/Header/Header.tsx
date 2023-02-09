@@ -1,21 +1,22 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 export const Header = (): JSX.Element => {
   return (
-    <header className="max-w-4xl italic text-white text-9xl">
+    <motion.header className="w-full text-5xl  md:text-8xl overflow-hidden max-w-3xl italic text-white  ">
       <h2 className=" w-fit font-medium">Intersection</h2>
       <div className="flex justify-between">
         <h2 className=" font-bold text-transparent-with-border">Observer</h2>
         <h2 className=" font-thin ">&</h2>
       </div>
-      <div className="capitalize marquee bg-white text-black">
-        <div className="flex marquee__inner">
+      <div className="marquee">
+        <div className="marquee__inner">
           <h2>pexel</h2>
           <h2>pexel</h2>
           <h2>pexel</h2>
           <h2>pexel</h2>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };

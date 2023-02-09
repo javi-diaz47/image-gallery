@@ -1,32 +1,52 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { usePhotosInfiniteScroll } from "../../Hooks/usePhotosInfiniteScroll";
+import { figureReveal, imageReveal } from "../../assets/animation/photoReveal";
 
 export const InfiniteGallery = (): JSX.Element => {
   const { photos, lastRef } = usePhotosInfiniteScroll();
   return (
     <>
-      <li className="flex flex-col gap-32">
+      <motion.li className="grid gap-24">
         {photos.map(({ src: { large } }, i) => {
           const src = large;
           if (i + 1 === photos.length) {
             return (
-              <figure
+              <motion.figure
+                variants={figureReveal}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
                 key={i}
                 ref={lastRef}
-                className="rounded-xl grid place-items-center text-6xl font-bold "
+                className="w-full overflow-hidden"
               >
-                <img src={src} />
-              </figure>
+                <motion.img
+                  variants={imageReveal}
+                  src={src}
+                  className="w-full object-fit"
+                />
+              </motion.figure>
             );
           }
-
           return (
-            <figure key={i} className="rounded-xl grid place-items-center ">
-              <img src={src} />
-            </figure>
+            <motion.figure
+              variants={figureReveal}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              key={i}
+              className="w-full overflow-hidden"
+            >
+              <motion.img
+                variants={imageReveal}
+                src={src}
+                className=" w-full object-fit"
+              />
+            </motion.figure>
           );
         })}
-      </li>
+      </motion.li>
     </>
   );
 };
