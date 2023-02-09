@@ -1,4 +1,4 @@
-export interface Root {
+export interface Page {
   page: number;
   per_page: number;
   photos: Photo[];

@@ -1,23 +1,18 @@
 import React from "react";
-import { requestPexelPage } from "../../utils/requestPexelPage";
-import { useInfiniteScroll } from "../../Hooks/useInfiniteScroll";
-import type { Photo } from "../../types";
+import { usePhotosInfiniteScroll } from "../../Hooks/usePhotosInfiniteScroll";
 
-export const PexelInfiniteScroll = (): JSX.Element => {
-  const { items, lastItemRef } = useInfiniteScroll<Photo>({
-    req: requestPexelPage,
-  });
-
+export const InfiniteGallery = (): JSX.Element => {
+  const { photos, lastRef } = usePhotosInfiniteScroll();
   return (
     <>
       <li className="flex flex-col gap-32">
-        {items.map(({ src: { medium } }, i) => {
-          const src = medium;
-          if (i + 1 === items.length) {
+        {photos.map(({ src: { large } }, i) => {
+          const src = large;
+          if (i + 1 === photos.length) {
             return (
               <figure
                 key={i}
-                ref={lastItemRef}
+                ref={lastRef}
                 className="rounded-xl grid place-items-center text-6xl font-bold "
               >
                 <img src={src} />

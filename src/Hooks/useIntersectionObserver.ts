@@ -7,7 +7,7 @@ interface ReturnType {
 export const useIntersectionObserver = ({
   dispatch,
 }: {
-  dispatch: () => void;
+  dispatch: () => Promise<void>;
 }): ReturnType => {
   const lastRef = useRef<HTMLDivElement | null>(null);
 
@@ -16,8 +16,7 @@ export const useIntersectionObserver = ({
   useEffect(() => {
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && lastRef.current !== null) {
-        dispatch();
-        console.log("done");
+        void dispatch();
         observer.current?.unobserve(lastRef.current);
       }
     });
